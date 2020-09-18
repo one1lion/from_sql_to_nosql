@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Server", "TracklessProductTracker\Server\TracklessProductTracker.Server.csproj", "{F6B3A67C-A485-48A2-8331-B6DCEAF7105C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Client", "TracklessProductTracker\Client\TracklessProductTracker.Client.csproj", "{E1CD671F-E04E-48C7-9E0F-A35906F13E9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Shared", "TracklessProductTracker\Shared\TracklessProductTracker.Shared.csproj", "{3DE0D039-93F4-4FE9-A348-1B7119EEC75D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2BC5723-3D71-47B6-B0BA-97D447BC0676}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Models", "TracklessProductTracker.Models\TracklessProductTracker.Models.csproj", "{4C49C877-7381-4892-8A97-B80737A8409A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Database", "TracklessProductTracker.Database\TracklessProductTracker.Database.csproj", "{572104E8-D631-4759-8444-6DB2CAC9D612}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6B3A67C-A485-48A2-8331-B6DCEAF7105C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B3A67C-A485-48A2-8331-B6DCEAF7105C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B3A67C-A485-48A2-8331-B6DCEAF7105C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B3A67C-A485-48A2-8331-B6DCEAF7105C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CD671F-E04E-48C7-9E0F-A35906F13E9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CD671F-E04E-48C7-9E0F-A35906F13E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CD671F-E04E-48C7-9E0F-A35906F13E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CD671F-E04E-48C7-9E0F-A35906F13E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DE0D039-93F4-4FE9-A348-1B7119EEC75D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DE0D039-93F4-4FE9-A348-1B7119EEC75D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DE0D039-93F4-4FE9-A348-1B7119EEC75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DE0D039-93F4-4FE9-A348-1B7119EEC75D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C49C877-7381-4892-8A97-B80737A8409A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C49C877-7381-4892-8A97-B80737A8409A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C49C877-7381-4892-8A97-B80737A8409A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C49C877-7381-4892-8A97-B80737A8409A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{572104E8-D631-4759-8444-6DB2CAC9D612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{572104E8-D631-4759-8444-6DB2CAC9D612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{572104E8-D631-4759-8444-6DB2CAC9D612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{572104E8-D631-4759-8444-6DB2CAC9D612}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63E952E9-3FC8-4D1E-93B7-C86F3381BA55}
+	EndGlobalSection
+EndGlobal
