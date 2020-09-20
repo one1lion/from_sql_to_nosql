@@ -193,6 +193,7 @@ These are the items that will be referenced on a `Tracking Ticket` by `itemId`..
 ```
 
 ## Tracking Ticket Collection
+The main entry point for the tracking and QC system.  This is used for documenting a specific Item, whether the item be a Chemical, Instrument, Sample, or other Item Type added in the future.  The Tracking Ticket will be associated with a Guid that will be encoded in a QR Code with the corresponding /track/{guid} Url.  Each ticket will be associated with one, and only one, Item.
 ```
 {
   "id": "1", // An auto-increment Id, to be partitioned on
