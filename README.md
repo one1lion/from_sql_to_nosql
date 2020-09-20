@@ -4,7 +4,9 @@ A sample project setup that is using Entity Framework Core and SQL Server that I
 # Introduction
 I am attempting to understand NoSQL by starting from what I do know: RDBMS.  The application I am partially assisting with is one that will allow users to scan a QR Code that is the encoded Url endpoint for Tracking Tickets, with the Tracking Ticket's Guid as a route parameter (e.g. https://{domain}/track/{ticket_guid}).  Users will stick QR Code stickers on equipment/instruments, chemicals, and samples.  Then, most likely using an iPad or other tablet device, scan the barcode and be directed to the Url to enter information about the thing they scanned.  Sounds pretty simple, and it was easy to model using a relational database.  However, the items that are being logged can be any number of real-world entities, which should be allowed to take whatever form is needed for a particular items type.  The person I am attempting to help also has the requirement to use Cosmos DB for the database, which, I believe, means that I am not able to apply much of my knowledge of using EF Core for a SQL Server provider.  
 
-One more thing to note is that the way the system can retrieve the various types of data are noted below, but in short, we should be able to query for Tracking Tickets (with the associated Item and all of the data for that particular item's type), Mill Run Sheets (and the associated Samples -- which are a particular Item type), or individual Items (which will be displayed on their own page, and should be able to be navigated to directly if, for instance, a user bookmarks the page and navigates directly to it).
+Another thing to note is that the way the system can retrieve the various types of data are noted below, but in short, we should be able to query for Tracking Tickets (with the associated Item and all of the data for that particular item's type), Mill Run Sheets (and the associated Samples -- which are a particular Item type), or individual Items (which will be displayed on their own page, and should be able to be navigated to directly if, for instance, a user bookmarks the page and navigates directly to it).
+
+Lastly, the product that this is going to be for is just something that someone asked me to help them figure out. I do not have all of the information regarding the usage, terminology, nor structure.  This is my best guess based on the conversations we've had.  I still think I can use this to figure out how to setup and use a NoSQL database for other scenarios.
 
 # Definitions
 **Mill Run Sheet**: A Mill Run Sheet is a physical document used for tracking samples taken from Storage Tanks -- Although it looks like the definitions I've found through Google point to this being a sampling of solid material from a mill, whereas the samples used for this project are liquid, I believe
@@ -59,23 +61,74 @@ Things that can be searched for and displayed by clicking on a result, or by cli
        - Mill Run Sheet (list of Samples on a Mill Run Sheet)
 
 # Documents
+The following should be Documents that can be queried directly.  The Mill Run Sheets can have multiple Samples (Samples are an Item with the `"type"` property set to `"Sample"`).  Note that the same Sample item will be referenced by a `Tracking Ticket` document.  I believe each section would be its own collection:
+ - Plants collection
+ - Mill Run Sheets collection
+ - Tracking Items collection
+ - Tracking Tickets collection
+ 
+I am still not sure about partitions.  I get the concept is to use a property that is unique, unchanging, and is for referencing documents from other documents, but the tutorials and blogs I've looked at deal with using 1 partition.  With my relational mindset, I'm thinking FKs, where a Sample item type can have an FK of the Tracking Ticket Id as well as the Mill Run Sheet Id, since it can reach out to get the data of both of those objects (entities) from the Sample record.  Likewise, the Tracking Ticket would have the Sample Item's Id.  Does this mean a partition on Plant Id, Mill Run Sheet Id, Tracking Item Id (as in the Chemical, Instrument, or Sample document's Id), and Tracking Ticket Id?  I'll keep trying to figure that out.
 
-## Mill Run Sheet
+## Plant collection
+These are the collection of documents related to the physical Plants, which are "Sites" or "Organizations" that have personnel that will use this system.
 ```
 {
-  "id": "1", // An auto-increment Id, to be partitioned on
+  "id": "1", // An auto-increment Id
+  "guid": "{some-guid}", // For using in a Url when displaying the Plant directly
+  "name": "Organization 1",
+  "acronym": "ORG-1",
+  "contactInfo": // Optional
+  [
+    {
+      "type": "address",
+      "addressLine1": "Line 1",
+      "addressLine1": "Line 2",
+      "addressLine1": "Line 3",
+      "city": "Here City",
+      "state_province": "ST",
+      "zip": "12345"
+    },
+    {
+      "type": "person",
+      "role": "Personnel Management",
+      "name": "John Dunbar",
+      "title": "HR Specialist",
+      "contact": 
+      [
+        {
+          "type": "email",
+          "email": "john.dunbar@org1.org"
+        },
+        {
+          "type": "phone",
+          "phoneNumber": "+1-123-456-7890"
+        }
+      ]
+    }
+  ]
+}
+```
+ 
+## Mill Run Sheet collection
+These are the digital representations of the physical sheets used to document samples and from where they are taken.
+```
+{
+  "id": "1", // An auto-increment Id
   "guid": "{some-guid}",  // For using in a Url to pull up the Mill Run Sheet
   "millRunSheetId": "2020SEP-13392", // Internal Id
   "tankId": "PTR-2492", // Internal Tank Id/Name
-  "batchId": "
+  "batchId": "BB-4",
+  "lot": "AHIK"
 }
 ```
 
-## Tracking Items
-### Sample Item
+## Tracking Items collection
+These are the items that will be referenced on a `Tracking Ticket` by `itemId`...although I think `itemId` is a reserved object in a Cosmos DB record, so I might need to change the actual property name, or be okay with using the value in `itemId`.  In any case, I think this is how I would model it, but I am certainly looking for input on this.  For now, items can be of type: Chemical, Instrument, or Sample; but this can be extended in the future.
+
+### Sample Item type document
 ```
 {
-  "id": "1", // An auto-increment Id, to be partitioned on
+  "id": "1", // An auto-increment Id
   "guid": "{some-guid}",  // For using in a Url without the parent Mill Run Sheet, nor Tracking Ticket data
   "type": "Sample",
   "trackingTicketId": "1" // From a partition? - to reference the Tracking Ticket from the Sample Item document
@@ -113,11 +166,11 @@ Things that can be searched for and displayed by clicking on a result, or by cli
 }
 ```
 
-### Instrument Item
+### Instrument Item type document
 ```
 {
-  "id": "2", // An auto-increment Id, to be partitioned on
-  "guid": "{some-guid}",  // For using in a Url when displaying the Item directly without any other "related" data
+  "id": "2", // An auto-increment Id
+  "guid": "{some-guid}",  // For using in a Url when displaying the Item directly
   "type": "Instrument",
   "trackingTicketId": 2 // From a partition? - to reference the Tracking Ticket from the Instrument Item document
   "name": "Coupled Argon Atomic Emission Spectrometer (ICP-AES)",
@@ -126,11 +179,11 @@ Things that can be searched for and displayed by clicking on a result, or by cli
 }
 ```
 
-### Chemical Item
+### Chemical Item type document
 ```
 {
-  "id": "3", // An auto-increment Id, to be partitioned on
-  "guid": "{some-guid}",  // For using in a Url when displaying the Item directly without any other "related" data
+  "id": "3", // An auto-increment Id
+  "guid": "{some-guid}",  // For using in a Url when displaying the Item directly
   "type": "Chemical",
   "trackingTicketId": 3 // From a partition? - to reference the Tracking Ticket from the Chemical Item document
   "name": "Methylene Chloride, Trichloroethylene",
@@ -138,46 +191,7 @@ Things that can be searched for and displayed by clicking on a result, or by cli
 }
 ```
 
-## Plant
-```
-{
-  "id": "1",
-  "guid": "{some-guid}",
-  "name": "Organization 1",
-  "acronym": "ORG-1",
-  "contactInfo": // Optional
-  [
-    {
-      "type": "address",
-      "addressLine1": "Line 1",
-      "addressLine1": "Line 2",
-      "addressLine1": "Line 3",
-      "city": "Here City",
-      "state_province": "ST",
-      "zip": "12345"
-    },
-    {
-      "type": "person",
-      "role": "Personnel Management",
-      "name": "John Dunbar",
-      "title": "HR Specialist",
-      "contact": 
-      [
-        {
-          "type": "email",
-          "email": "john.dunbar@org1.org"
-        },
-        {
-          "type": "phone",
-          "phoneNumber": "+1-123-456-7890"
-        }
-      ]
-    }
-  ]
-}
-```
-
-## Tracking Ticket
+## Tracking Ticket Collection
 ```
 {
   "id": "1", // An auto-increment Id, to be partitioned on
