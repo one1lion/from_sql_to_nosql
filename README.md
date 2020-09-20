@@ -9,7 +9,8 @@ Another thing to note is that the way the system can retrieve the various types 
 Lastly, the product that this is going to be for is just something that someone asked me to help them figure out. I do not have all of the information regarding the usage, terminology, nor structure.  This is my best guess based on the conversations we've had.  I still think I can use this to figure out how to setup and use a NoSQL database for other scenarios.
 
 # Definitions
-**Mill Run Sheet**: A Mill Run Sheet is a physical document used for tracking samples taken from Storage Tanks -- Although it looks like the definitions I've found through Google point to this being a sampling of solid material from a mill, whereas the samples used for this project are liquid, I believe
+**Mill Run Sheet**: A Mill Run Sheet is a physical document used for tracking samples taken from Storage Tanks -- Although it looks like the definitions I've found through Google point to this being a sampling of solid material from a mill, whereas the samples used for this project are liquid, I believe. 
+>*Note that a Mill Run Sheet is created for taking multiple samples.  Once the samples are added to the sheet and handed over, the Mill Run Sheet will not be modified further.  So the entry of the Mill Run Sheet happens onces, and the samples are associated with it by adding the Mill Run Sheet Id to the Sample item's document.*
 
 **Tracking Ticket**: A record that is used for tracking a particular Item
 
@@ -62,10 +63,10 @@ Things that can be searched for and displayed by clicking on a result, or by cli
 
 # Documents
 The following should be Documents that can be queried directly.  The Mill Run Sheets can have multiple Samples (Samples are an Item with the `"type"` property set to `"Sample"`).  Note that the same Sample item will be referenced by a `Tracking Ticket` document.  I believe each section would be its own collection:
- - Plants collection
- - Mill Run Sheets collection
- - Tracking Items collection
- - Tracking Tickets collection
+ - Plants collection: Each document is created once, seldom edited, and seldom read
+ - Mill Run Sheets collection: Each document is created once, seldom edited, and seldom read
+ - Tracking Items collection: Each document is created once, moderately edited, and often read
+ - Tracking Tickets collection: Each document is created once, moderately edited, and often read
  
 I am still not sure about partitions.  I get the concept is to use a property that is unique, unchanging, and is for referencing documents from other documents, but the tutorials and blogs I've looked at deal with using 1 partition.  With my relational mindset, I'm thinking FKs, where a Sample item type can have an FK of the Tracking Ticket Id as well as the Mill Run Sheet Id, since it can reach out to get the data of both of those objects (entities) from the Sample record.  Likewise, the Tracking Ticket would have the Sample Item's Id.  Does this mean a partition on Plant Id, Mill Run Sheet Id, Tracking Item Id (as in the Chemical, Instrument, or Sample document's Id), and Tracking Ticket Id?  I'll keep trying to figure that out.
 
