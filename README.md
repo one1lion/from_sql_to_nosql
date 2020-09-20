@@ -203,3 +203,9 @@ The main entry point for the tracking and QC system.  This is used for documenti
   "itemId": 1 // From a partition? - to reference the Tracking Item document  
 }
 ```
+
+# Resources
+ - [Partitioning](https://docs.microsoft.com/en-us/azure/cosmos-db/partitioning-overview)
+ - [Modeling](https://docs.microsoft.com/en-us/azure/cosmos-db/modeling-data)
+ - [Writing Stored Procedures](https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-write-stored-procedures-triggers-udfs#stored-procedures)
+ - [More Best Practices for Partitioning and Modeling](https://azure.microsoft.com/en-us/resources/videos/build-2019-best-practices-for-azure-cosmos-db-data-modeling-partitioning-and-rus/)
