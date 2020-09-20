@@ -72,8 +72,8 @@ Things that can be searched for and displayed by clicking on a result, or by cli
 ```
 
 ## Tracking Items
+### Sample Item
 ```
-// Sample Item
 {
   "id": "1", // An auto-increment Id, to be partitioned on
   "guid": "{some-guid}",  // For using in a Url without the parent Mill Run Sheet, nor Tracking Ticket data
@@ -111,8 +111,10 @@ Things that can be searched for and displayed by clicking on a result, or by cli
     }
   ]
 }
+```
 
-// Instrument Item
+### Instrument Item
+```
 {
   "id": "2", // An auto-increment Id, to be partitioned on
   "guid": "{some-guid}",  // For using in a Url when displaying the Item directly without any other "related" data
@@ -122,8 +124,10 @@ Things that can be searched for and displayed by clicking on a result, or by cli
   "instructions": "some instructions", // Optional
   "comments": "some comments" // Optional
 }
+```
 
-// A Chemical Item
+### Chemical Item
+```
 {
   "id": "3", // An auto-increment Id, to be partitioned on
   "guid": "{some-guid}",  // For using in a Url when displaying the Item directly without any other "related" data
