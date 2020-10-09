@@ -244,7 +244,7 @@ namespace TracklessProductTracker.Database
                         SampleDate = new DateTime(2020, 2, 1),
                         SampleRetreivedBy = "Humberto",
                         TrackingTicketId = "5F4290DF-7873-4F50-8F03-39820D9788CB",
-                        CategoryId = "",
+                        CategoryId = "75B5D2C5-E0DA-410B-B6B5-FA0CDF5CFFC4",
                         CategoryName = "Sample"
                     }
                 );
