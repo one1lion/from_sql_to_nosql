@@ -83,8 +83,8 @@ These are the collection of documents related to the physical Plants, which are 
     {
       "type": "address",
       "addressLine1": "Line 1",
-      "addressLine1": "Line 2",
-      "addressLine1": "Line 3",
+      "addressLine2": "Line 2",
+      "addressLine3": "Line 3",
       "city": "Here City",
       "state_province": "ST",
       "zip": "12345"
