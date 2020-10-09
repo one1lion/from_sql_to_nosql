@@ -6,10 +6,7 @@ namespace TracklessProductTracker.Models
 {
     public partial class MillRunSheet
     {
-        /// <summary>
-        /// The database Autonumber Identity
-        /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// The internal Mill Run Sheet's Id
         /// </summary>
@@ -17,7 +14,7 @@ namespace TracklessProductTracker.Models
         /// <summary>
         /// The Tank Id
         /// </summary>
-        public int TankId { get; set; }
+        public string TankId { get; set; }
         /// <summary>
         /// The internal Batch Id
         /// </summary>

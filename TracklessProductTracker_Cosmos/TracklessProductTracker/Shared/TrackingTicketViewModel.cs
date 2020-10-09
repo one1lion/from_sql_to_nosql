@@ -8,9 +8,9 @@ namespace TracklessProductTracker.Shared
 {
     public class TrackingTicketViewModel
     {
-        public int? Id { get; set; }
+        public string Id { get; set; }
         public Guid QrCodeGuid { get; set; }
-        public int? ItemCategoryId { get; set; }
+        public string ItemCategoryId { get; set; }
         private string _ItemCategoryName;
         public string ItemCategoryName
         {
@@ -18,7 +18,7 @@ namespace TracklessProductTracker.Shared
             {
                 if (string.IsNullOrWhiteSpace(_ItemCategoryName))
                 {
-                    return !ItemCategoryId.HasValue ? default : ItemCategories.SingleOrDefault(ic => ic.Id == ItemCategoryId)?.Name;
+                    return !string.IsNullOrWhiteSpace(ItemCategoryId) ? default : ItemCategories.SingleOrDefault(ic => ic.Id == ItemCategoryId)?.Name;
                 }
                 return _ItemCategoryName;
             }
@@ -27,7 +27,7 @@ namespace TracklessProductTracker.Shared
                 _ItemCategoryName = value;
             }
         }
-        public int? ItemId { get; set; }
+        public string ItemId { get; set; }
         public string TechName { get; set; }
         public string ProductName { get; set; }
         public string FormulationDescriptionType { get; set; }

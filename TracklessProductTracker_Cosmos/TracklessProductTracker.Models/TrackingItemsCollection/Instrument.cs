@@ -11,5 +11,7 @@ namespace TracklessProductTracker.Models
         public string Name { get; set; }
         public string Instructions { get; set; }
         public string Comments { get; set; }
+        public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
     }
 }

@@ -7,17 +7,18 @@
 
 @if (ticket is null) {
   <p>Loading...</p>
-} else if (!ticket.ItemCategoryId.HasValue) {
+} else if (string.IsNullOrWhiteSpace(ticket.ItemCategoryId)) {
   @if (ticket.Id == default) {
     <p>Record not in use create new ticket: @ticket.QrCodeGuid</p>
   }
-  <p>Pick Type for ticket Id @ticket.Id.ToString()</p>
+  <p>Pick Type for ticket Id @ticket.Id</p>
   <select @bind="selectedItemCategory" disabled="@((ticket?.ItemCategories?.Count ?? 0) == 0)">
     @if (ticket?.ItemCategories is null) {
-      <option value="-1">Loading...</option>
+      <option value="" selected>Loading...</option>
     } else if (ticket.ItemCategories.Count == 0) {
-      <option value="-1">No Categories Loaded</option>
+      <option value="" selected>No Categories Loaded</option>
     } else {
+      <option value="">-- Select One --</option>
       foreach (var curCat in ticket.ItemCategories.OrderBy(c => c.Name)) {
         <option value="@curCat.Id">@curCat.Name</option>
       }
@@ -52,12 +53,9 @@
   private string selectedItemCategory {
     get => _selectedItemCategory;
     set {
-      if (_selectedItemCategory == value) { return; }
-      if (int.TryParse(value, out int catId)) {
-        ticket.ItemCategoryId = catId;
-      } else {
-        ticket.ItemCategoryId = default;
-      }
+      if (_selectedItemCategory == value || ticket?.ItemCategories is null) { return; }
+      ticket.ItemCategoryId = !string.IsNullOrWhiteSpace(value) ? value : default;
+      ticket.ItemCategoryName = string.IsNullOrWhiteSpace(value) ? default : ticket.ItemCategories.SingleOrDefault(ic => ic.Id == value)?.Name;
       _selectedItemCategory = value;
       StateHasChanged();
     }
@@ -68,7 +66,6 @@
   }
 
   protected override async Task OnParametersSetAsync() {
-    Console.WriteLine($"QR Code Guid changed to: {QrCodeGuid}");
     if (curGuid != QrCodeGuid) {
       await LoadCurrentTrackingTicket();
     }
@@ -101,7 +98,7 @@
         curGuid = ticket.QrCodeGuid.ToString();
       }
 
-      _selectedItemCategory = ticket.ItemCategoryId.HasValue ? ticket.ItemCategoryId.ToString() : "-1";
+      _selectedItemCategory = !string.IsNullOrWhiteSpace(ticket.ItemCategoryId) ? ticket.ItemCategoryId : default;
       await InvokeAsync(() => StateHasChanged());
     }
   }

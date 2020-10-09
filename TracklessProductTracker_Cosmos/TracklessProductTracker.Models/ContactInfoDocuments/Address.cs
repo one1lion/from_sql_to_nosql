@@ -2,7 +2,9 @@
 {
     public partial class Address : IContactInfo
     {
+        public string Id { get; set; }
         public string Type { get; set; } = typeof(Address).FullName;
+        public string PlantId { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }

@@ -26,10 +26,37 @@ namespace TracklessProductTracker.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TracklessProductContext>(options => options.UseCosmos(
-                    accountEndpoint: Configuration.GetValue<string>("AzureCosmos:AccountEndpoint"),
-                    accountKey: Configuration.GetValue<string>("AzureCosmos:AccountKey"),
-                    databaseName: Configuration["AzureCosmos:DatabaseName"]));
+            services.AddDbContext<TracklessProductContext>(options
+                =>
+                {
+                    options.UseCosmos(
+                        accountEndpoint: Configuration.GetValue<string>("AzureCosmos:AccountEndpoint"),
+                        accountKey: Configuration.GetValue<string>("AzureCosmos:AccountKey"),
+                        databaseName: Configuration["AzureCosmos:DatabaseName"]);
+#if DEBUG
+                    options.EnableSensitiveDataLogging();
+#endif
+                });
+
+            // For use with EF Core Cosmos 5.0
+            //   Example from https://docs.microsoft.com/en-us/ef/core/providers/cosmos/?tabs=dotnet-core-cli
+            //services.AddDbContext<TracklessProductContext>(options 
+            //    => options.UseCosmos(
+            //        $"AccountEndpoint={Configuration.GetValue<string>("AzureCosmos:AccountEndpoint")};AccountKey={Configuration.GetValue<string>("AzureCosmos:AccountKey")}",
+            //        databaseName: Configuration["AzureCosmos:DatabaseName"]),
+            //        options =>
+            //        {
+            //            options.ConnectionMode(ConnectionMode.Gateway);
+            //            options.WebProxy(new WebProxy());
+            //            options.LimitToEndpoint();
+            //            options.Region(Regions.AustraliaCentral);
+            //            options.GatewayModeMaxConnectionLimit(32);
+            //            options.MaxRequestsPerTcpConnection(8);
+            //            options.MaxTcpConnectionsPerEndpoint(16);
+            //            options.IdleTcpConnectionTimeout(TimeSpan.FromMinutes(1));
+            //            options.OpenTcpConnectionTimeout(TimeSpan.FromMinutes(1));
+            //            options.RequestTimeout(TimeSpan.FromMinutes(1));
+            //        });
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -46,7 +73,6 @@ namespace TracklessProductTracker.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
-                EnsureDatabaseCreated(db, logger);
             }
             else
             {
@@ -54,6 +80,7 @@ namespace TracklessProductTracker.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            EnsureDatabaseCreated(db, logger);
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
@@ -73,6 +100,7 @@ namespace TracklessProductTracker.Server
         {
             try
             {
+                if (Configuration.GetValue<bool>("RecreateDatabase")) { context.Database.EnsureDeleted(); }
                 context.Database.EnsureCreated();
             }
             catch (Exception ex)

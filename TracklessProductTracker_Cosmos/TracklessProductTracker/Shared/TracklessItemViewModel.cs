@@ -7,9 +7,9 @@ namespace TracklessProductTracker.Shared
     public class TracklessItemViewModel
     {
         #region Top Level Information
-        public int Id { get; set; }
-        public int? CategoryId { get; set; }
-        public string Category { get; set; }
+        public string Id { get; set; }
+        public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
         #endregion
 
         #region Shared Fields
@@ -27,10 +27,10 @@ namespace TracklessProductTracker.Shared
 
         #region Sample-specific fields
         public string SampleRetreivedBy { get; set; }
-        public DateTime SampleDate { get; set; }
-        public int? ContainerTypeId { get; set; }
+        public DateTime? SampleDate { get; set; }
+        public string ContainerTypeId { get; set; }
         public string ContainerTypeName { get; set; }
-        public int? MillRunSheetId { get; set; }
+        public string MillRunSheetId { get; set; }
         #endregion
     }
 }

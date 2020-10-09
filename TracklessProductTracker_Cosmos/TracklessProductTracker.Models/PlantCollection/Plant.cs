@@ -5,7 +5,7 @@ namespace TracklessProductTracker.Models
 {
     public partial class Plant
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public Guid Guid { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public string Acronym { get; set; }

@@ -6,15 +6,16 @@ namespace TracklessProductTracker.Models
 {
     public partial class Tank
     {
-        /// <summary>
-        /// The database Autonumber Identity
-        /// </summary>
-        public int Id { get; set; }
-        public string Type { get; set; } = typeof(Tank).FullName;
+        public string Id { get; set; }
+        public string Type { get; set; } = "Tank";
         /// <summary>
         /// The internal TankId
         /// </summary>
         public string TankId { get; set; }
+        /// <summary>
+        /// The plant this tank is located at
+        /// </summary>
+        public string PlantId { get; set; }
         /// <summary>
         /// The current number of Gallons in the tank
         /// </summary>

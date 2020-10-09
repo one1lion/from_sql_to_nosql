@@ -13,7 +13,11 @@ namespace TracklessProductTracker.Models
         public DateTime SampleDate { get; set; }
         public string ContainerTypeName { get; set; }
         public string MillRunSheetId { get; set; }
+        public string ContainerTypeId { get; set; }
+        public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
 
         public IEnumerable<Test> Tests { get; set; }
+        public DateTime DateTimeStamp { get; set; } = DateTime.UtcNow;
     }
 }

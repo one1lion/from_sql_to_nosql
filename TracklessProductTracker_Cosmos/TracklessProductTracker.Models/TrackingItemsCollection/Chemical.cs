@@ -10,5 +10,7 @@ namespace TracklessProductTracker.Models
         public string TrackingTicketId { get; set; }
         public string Name { get; set; }
         public string CommonName { get; set; }
+        public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
     }
 }
