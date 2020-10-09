@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>692858e8-7e36-45d8-aa64-29d3c757a359</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\TracklessProductTracker.Database\TracklessProductTracker.Database.csproj" />
+    <ProjectReference Include="..\Client\TracklessProductTracker.Client.csproj" />
+    <ProjectReference Include="..\Shared\TracklessProductTracker.Shared.csproj" />
+  </ItemGroup>
+
+
+</Project>

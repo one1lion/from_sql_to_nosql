@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D8CEEC9-2F8C-450B-A5B6-B5E810F90CED}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Database", "TracklessProductTracker.Database\TracklessProductTracker.Database.csproj", "{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Server", "TracklessProductTracker\Server\TracklessProductTracker.Server.csproj", "{88EB7C49-F726-4F2B-BA8C-5422076E4468}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Client", "TracklessProductTracker\Client\TracklessProductTracker.Client.csproj", "{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Shared", "TracklessProductTracker\Shared\TracklessProductTracker.Shared.csproj", "{B551619C-1C23-4A85-938F-1817D9AA3027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Models", "TracklessProductTracker.Models\TracklessProductTracker.Models.csproj", "{21E36DF3-ECBB-4444-9132-38BD38646850}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88EB7C49-F726-4F2B-BA8C-5422076E4468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88EB7C49-F726-4F2B-BA8C-5422076E4468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88EB7C49-F726-4F2B-BA8C-5422076E4468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88EB7C49-F726-4F2B-BA8C-5422076E4468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B551619C-1C23-4A85-938F-1817D9AA3027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B551619C-1C23-4A85-938F-1817D9AA3027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B551619C-1C23-4A85-938F-1817D9AA3027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B551619C-1C23-4A85-938F-1817D9AA3027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E36DF3-ECBB-4444-9132-38BD38646850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E36DF3-ECBB-4444-9132-38BD38646850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E36DF3-ECBB-4444-9132-38BD38646850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E36DF3-ECBB-4444-9132-38BD38646850}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33F56F2B-6AB3-4D32-B642-168A2B673C83}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,46 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">TracklessProductTracker</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+  <ul class="nav flex-column">
+    <li class="nav-item px-3">
+      <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="oi oi-home" aria-hidden="true"></span> Home
+      </NavLink>
+    </li>
+
+    <li class="nav-item px-3">
+      <NavLink class="nav-link" href="track" Match="NavLinkMatch.All" title="No Guid specified in route, so should redirect to address with new Guid">
+        <span class="oi oi-home" aria-hidden="true"></span> Track (New Item)
+      </NavLink>
+    </li>
+
+    <li class="nav-item px-3">
+      <NavLink class="nav-link" href="track/a45f2eda-4688-417e-acd2-8eb01bc2702a" Match="NavLinkMatch.All" title="Guid specified in route for a record that exists in the database">
+        <span class="oi oi-home" aria-hidden="true"></span> Track (Test Item)
+      </NavLink>
+    </li>
+
+    <li class="nav-item px-3">
+      <NavLink class="nav-link" href="track/6d1efdd0-c4f5-403a-8c90-4a07ed7227d9" Match="NavLinkMatch.All" title="Guid specified in route, but doesn't exist in the database">
+        <span class="oi oi-home" aria-hidden="true"></span> Track (Guid Not Exists)
+      </NavLink>
+    </li>
+
+  </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

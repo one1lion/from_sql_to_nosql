@@ -1,0 +1,108 @@
+﻿@page "/track"
+@page "/track/{QrCodeGuid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Track Item</h3>
+
+@if (ticket is null) {
+  <p>Loading...</p>
+} else if (!ticket.ItemCategoryId.HasValue) {
+  @if (ticket.Id == default) {
+    <p>Record not in use create new ticket: @ticket.QrCodeGuid</p>
+  }
+  <p>Pick Type for ticket Id @ticket.Id.ToString()</p>
+  <select @bind="selectedItemCategory" disabled="@((ticket?.ItemCategories?.Count ?? 0) == 0)">
+    @if (ticket?.ItemCategories is null) {
+      <option value="-1">Loading...</option>
+    } else if (ticket.ItemCategories.Count == 0) {
+      <option value="-1">No Categories Loaded</option>
+    } else {
+      foreach (var curCat in ticket.ItemCategories.OrderBy(c => c.Name)) {
+        <option value="@curCat.Id">@curCat.Name</option>
+      }
+    }
+  </select>
+} else {
+  <p>Enter item details</p>
+  <EditForm Model="ticket" class="form">
+    <label>Id: @ticket.Id - Type: @ticket.ItemCategoryName</label>
+    <div class="form-group">
+      <label>Tech Name</label>
+      <InputText @bind-Value="ticket.TechName" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Sample Date</label>
+      <InputDate @bind-Value="ticket.Item.SampleDate" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Sample Retrieved By</label>
+      <InputText @bind-Value="ticket.Item.SampleRetreivedBy" class="form-control" />
+    </div>
+  </EditForm>
+}
+
+@code {
+  [Parameter] public string QrCodeGuid { get; set; }
+
+  private string curGuid;
+
+  private TrackingTicketViewModel ticket;
+  private string _selectedItemCategory;
+  private string selectedItemCategory {
+    get => _selectedItemCategory;
+    set {
+      if (_selectedItemCategory == value) { return; }
+      if (int.TryParse(value, out int catId)) {
+        ticket.ItemCategoryId = catId;
+      } else {
+        ticket.ItemCategoryId = default;
+      }
+      _selectedItemCategory = value;
+      StateHasChanged();
+    }
+  }
+
+  protected override async Task OnInitializedAsync() {
+    await LoadCurrentTrackingTicket();
+  }
+
+  protected override async Task OnParametersSetAsync() {
+    Console.WriteLine($"QR Code Guid changed to: {QrCodeGuid}");
+    if (curGuid != QrCodeGuid) {
+      await LoadCurrentTrackingTicket();
+    }
+  }
+
+  async Task LoadCurrentTrackingTicket() {
+    if (string.IsNullOrWhiteSpace(QrCodeGuid)) {
+      NavigationManager.NavigateTo($"track/{Guid.NewGuid()}");
+      return;
+    }
+    if (curGuid != QrCodeGuid) {
+      ticket = null;
+      try {
+        if (!string.IsNullOrWhiteSpace(QrCodeGuid) && Guid.TryParse(QrCodeGuid, out Guid qrCodeGuid)) {
+          curGuid = QrCodeGuid;
+          ticket = await Http.GetFromJsonAsync<TrackingTicketViewModel>($"api/Tickets/{QrCodeGuid}");
+        } else {
+          curGuid = null;
+        }
+      } catch (Exception ex) {
+        Console.Error.WriteLine(ex);
+        ticket = null;
+      }
+      if (ticket is null || ticket.QrCodeGuid == default) {
+        if (string.IsNullOrWhiteSpace(curGuid)) {
+          QrCodeGuid = Guid.NewGuid().ToString();
+          curGuid = QrCodeGuid;
+        }
+        ticket = new TrackingTicketViewModel() { QrCodeGuid = Guid.Parse(curGuid) };
+        curGuid = ticket.QrCodeGuid.ToString();
+      }
+
+      _selectedItemCategory = ticket.ItemCategoryId.HasValue ? ticket.ItemCategoryId.ToString() : "-1";
+      await InvokeAsync(() => StateHasChanged());
+    }
+  }
+}
