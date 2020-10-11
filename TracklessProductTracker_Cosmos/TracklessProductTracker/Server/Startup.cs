@@ -80,7 +80,7 @@ namespace TracklessProductTracker.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            EnsureDatabaseCreated(db, logger);
+            EnsureDatabaseCreated(db, env, logger);
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
@@ -96,11 +96,11 @@ namespace TracklessProductTracker.Server
             });
         }
 
-        void EnsureDatabaseCreated(TracklessProductContext context, ILogger<Startup> logger)
+        void EnsureDatabaseCreated(TracklessProductContext context, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             try
             {
-                if (Configuration.GetValue<bool>("RecreateDatabase")) { context.Database.EnsureDeleted(); }
+                if (Configuration.GetValue<bool>("RecreateDatabase") && env.IsDevelopment()) { context.Database.EnsureDeleted(); }
                 context.Database.EnsureCreated();
             }
             catch (Exception ex)
