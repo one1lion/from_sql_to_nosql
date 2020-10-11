@@ -18,10 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Database", "TracklessProductTracker.Database\TracklessProductTracker.Database.csproj", "{572104E8-D631-4759-8444-6DB2CAC9D612}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.CosmosDb", "TracklessProductTracker.CosmosDb\TracklessProductTracker.CosmosDb.csproj", "{FC9AEDB3-5C67-4146-8150-62FFFE438E7D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.CosmosModels", "TracklessProductTracker.CosmosModels\TracklessProductTracker.CosmosModels.csproj", "{FD48C69B-7A46-46E0-B462-160486AC3EE6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,14 +44,6 @@ Global
 		{572104E8-D631-4759-8444-6DB2CAC9D612}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{572104E8-D631-4759-8444-6DB2CAC9D612}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{572104E8-D631-4759-8444-6DB2CAC9D612}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC9AEDB3-5C67-4146-8150-62FFFE438E7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9AEDB3-5C67-4146-8150-62FFFE438E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC9AEDB3-5C67-4146-8150-62FFFE438E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC9AEDB3-5C67-4146-8150-62FFFE438E7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD48C69B-7A46-46E0-B462-160486AC3EE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD48C69B-7A46-46E0-B462-160486AC3EE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD48C69B-7A46-46E0-B462-160486AC3EE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD48C69B-7A46-46E0-B462-160486AC3EE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -58,6 +58,8 @@ namespace TracklessProductTracker.Database
 
                 entity.HasPartitionKey(e => e.Type);
 
+                entity.HasKey(e => e.Id);
+
                 entity.HasData(
                     new ContainerType() { Id = Guid.NewGuid().ToString(), Name = "1L Flask", Description = "A 1 Liter Flask" },
                     new ContainerType() { Id = "347BD99D-7C4B-44C2-B8EC-2A365B888BE9", Name = "250mL Beaker", Description = "A 250 milileter Beaker" },
@@ -70,6 +72,8 @@ namespace TracklessProductTracker.Database
                 entity.ToContainer("Lookups");
 
                 entity.HasPartitionKey(e => e.Type);
+
+                entity.HasKey(e => e.Id);
 
                 entity.HasData(
                     new ItemCategory() { Id = "60FD7286-FD07-40DC-A7BC-31DC6D706F89", Name = "Chemical" },
@@ -84,6 +88,8 @@ namespace TracklessProductTracker.Database
 
                 entity.HasPartitionKey(e => e.PlantId);
                 entity.HasPartitionKey(e => e.Type);
+
+                entity.HasKey(e => e.Id);
 
                 entity.HasData(
                     new Tank()
@@ -106,6 +112,8 @@ namespace TracklessProductTracker.Database
 
                 entity.HasNoDiscriminator();
 
+                entity.HasKey(e => e.Id);
+
                 entity.HasData(
                     new MillRunSheet()
                     {
@@ -127,6 +135,8 @@ namespace TracklessProductTracker.Database
 
                 entity.HasNoDiscriminator();
 
+                entity.HasKey(e => e.Id);
+
                 entity.HasData(
                     new Plant()
                     {
@@ -141,6 +151,8 @@ namespace TracklessProductTracker.Database
                     sa =>
                     {
                         sa.ToJsonProperty("ContactInfo");
+
+                        sa.HasKey(e => e.Id);
 
                         sa.HasData(
                             new Address()
@@ -160,6 +172,8 @@ namespace TracklessProductTracker.Database
                     sa =>
                     {
                         sa.ToJsonProperty("ContactInfo");
+
+                        sa.HasKey(e => e.Id);
 
                         sa.HasData(
                             new Person()
@@ -193,6 +207,8 @@ namespace TracklessProductTracker.Database
                             sx =>
                             {
                                 sx.ToJsonProperty("ContactInfo");
+
+                                sx.HasKey(e => e.Id);
                             });
                     });
 
@@ -201,6 +217,8 @@ namespace TracklessProductTracker.Database
                     sa =>
                     {
                         sa.ToJsonProperty("ContactInfo");
+
+                        sa.HasKey(e => e.Id);
                     });
 
                 entity.OwnsMany(e =>
@@ -208,6 +226,8 @@ namespace TracklessProductTracker.Database
                     sa =>
                     {
                         sa.ToJsonProperty("ContactInfo");
+
+                        sa.HasKey(e => e.Id);
                     });
             });
             #endregion
@@ -218,6 +238,8 @@ namespace TracklessProductTracker.Database
                 entity.ToContainer("TrackingItems");
 
                 entity.HasPartitionKey(e => e.TrackingTicketId);
+
+                entity.HasKey(e => e.Id);
             });
 
             modelBuilder.Entity<Instrument>(entity =>
@@ -225,6 +247,8 @@ namespace TracklessProductTracker.Database
                 entity.ToContainer("TrackingItems");
 
                 entity.HasPartitionKey(e => e.TrackingTicketId);
+
+                entity.HasKey(e => e.Id);
             });
 
             modelBuilder.Entity<Sample>(entity =>
@@ -233,6 +257,8 @@ namespace TracklessProductTracker.Database
 
                 entity.HasPartitionKey(e => e.MillRunSheetId);
                 entity.HasPartitionKey(e => e.TrackingTicketId);
+
+                entity.HasKey(e => e.Id);
 
                 entity.HasData(
                     new Sample()
@@ -273,6 +299,8 @@ namespace TracklessProductTracker.Database
                 entity.HasPartitionKey(e => e.ItemId);
 
                 entity.HasNoDiscriminator();
+
+                entity.HasKey(e => e.Id);
 
                 entity.HasData(
                     new TrackingTicket()

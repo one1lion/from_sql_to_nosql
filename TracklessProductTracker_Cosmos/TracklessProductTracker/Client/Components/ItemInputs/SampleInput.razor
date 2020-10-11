@@ -1,0 +1,25 @@
+﻿<div class="form-group">
+  <label>Sample Date</label>
+  <InputDate @bind-Value="Model.SampleDate" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Sample Retrieved By</label>
+  <InputText @bind-Value="Model.SampleRetreivedBy" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Container</label>
+  @* TODO: Change to lookup (combo box/TypeAhead) of Container Type *@
+  <InputText @bind-Value="Model.ContainerTypeName" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Mill Run Sheet</label>
+  @* TODO: Change to lookup (combo box/TypeAhead) of Mill Run Sheet *@
+  <InputText @bind-Value="Model.MillRunSheetId" class="form-control" />
+</div>
+
+@* TODO: Added tests Input UI *@
+
+@code {
+  [Parameter] public TracklessItemViewModel Model { get; set; }
+  [Parameter] public EventCallback<TracklessItemViewModel> ModelChanged { get; set; }
+}

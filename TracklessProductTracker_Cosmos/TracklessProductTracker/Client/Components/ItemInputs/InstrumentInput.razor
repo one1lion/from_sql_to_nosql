@@ -1,0 +1,17 @@
+﻿<div class="form-group">
+  <label>Instrument Name</label>
+  <InputText @bind-Value="Model.Name" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Instructions</label>
+  <InputText @bind-Value="Model.Instructions" class="form-control" />
+</div>
+<div class="form-group">
+  <label>Comments</label>
+  <InputText @bind-Value="Model.Comments" class="form-control" />
+</div>
+
+@code {
+  [Parameter] public TracklessItemViewModel Model { get; set; }
+  [Parameter] public EventCallback<TracklessItemViewModel> ModelChanged { get; set; }
+}

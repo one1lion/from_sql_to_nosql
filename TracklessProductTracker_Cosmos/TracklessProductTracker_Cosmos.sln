@@ -8,15 +8,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Database", "TracklessProductTracker.Database\TracklessProductTracker.Database.csproj", "{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Database", "TracklessProductTracker.Database\TracklessProductTracker.Database.csproj", "{11C8D8ED-4EEC-42F9-943A-7F1FCA379B8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Server", "TracklessProductTracker\Server\TracklessProductTracker.Server.csproj", "{88EB7C49-F726-4F2B-BA8C-5422076E4468}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Server", "TracklessProductTracker\Server\TracklessProductTracker.Server.csproj", "{88EB7C49-F726-4F2B-BA8C-5422076E4468}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Client", "TracklessProductTracker\Client\TracklessProductTracker.Client.csproj", "{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Client", "TracklessProductTracker\Client\TracklessProductTracker.Client.csproj", "{337D6DD9-01A1-4A32-BF41-FA7D1C5DCB45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Shared", "TracklessProductTracker\Shared\TracklessProductTracker.Shared.csproj", "{B551619C-1C23-4A85-938F-1817D9AA3027}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Shared", "TracklessProductTracker\Shared\TracklessProductTracker.Shared.csproj", "{B551619C-1C23-4A85-938F-1817D9AA3027}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TracklessProductTracker.Models", "TracklessProductTracker.Models\TracklessProductTracker.Models.csproj", "{21E36DF3-ECBB-4444-9132-38BD38646850}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TracklessProductTracker.Models", "TracklessProductTracker.Models\TracklessProductTracker.Models.csproj", "{21E36DF3-ECBB-4444-9132-38BD38646850}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

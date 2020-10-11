@@ -10,10 +10,10 @@ namespace TracklessProductTracker.Models
         public string Type { get; set; } = typeof(Sample).FullName;
         public string TrackingTicketId { get; set; }
         public string SampleRetreivedBy { get; set; }
-        public DateTime SampleDate { get; set; }
+        public DateTime? SampleDate { get; set; }
+        public string ContainerTypeId { get; set; }
         public string ContainerTypeName { get; set; }
         public string MillRunSheetId { get; set; }
-        public string ContainerTypeId { get; set; }
         public string CategoryId { get; set; }
         public string CategoryName { get; set; }
 

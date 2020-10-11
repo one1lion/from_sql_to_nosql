@@ -1,12 +1,19 @@
 ﻿@page "/track"
 @page "/track/{QrCodeGuid}"
+
+@using System.Threading
+@using Newtonsoft.Json
+@using TracklessProductTracker.Client.Components.ItemInputs
+
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
-<h3>Track Item</h3>
-
+<h3>Track Item <NavLink class="btn btn-primary" href="track">Add New Ticket</NavLink></h3>
+<p class="text-danger">
+  @((MarkupString)otherError)
+</p>
 @if (ticket is null) {
-  <p>Loading...</p>
+  <p>@(string.IsNullOrWhiteSpace(otherError) ? "Loading..." : "")</p>
 } else if (string.IsNullOrWhiteSpace(ticket.ItemCategoryId)) {
   @if (ticket.Id == default) {
     <p>Record not in use create new ticket: @ticket.QrCodeGuid</p>
@@ -26,20 +33,47 @@
   </select>
 } else {
   <p>Enter item details</p>
-  <EditForm Model="ticket" class="form">
-    <label>Id: @ticket.Id - Type: @ticket.ItemCategoryName</label>
+  <EditForm Model="ticket" class="form" OnValidSubmit="HandleValidSubmit" disabled="@saving">
+    <DataAnnotationsValidator />
+    @if (saveErrors.Count > 0) {
+      <p class="text-danger">
+        Errors occurred while trying to save the record:
+        <ul>
+          @foreach (var curError in saveErrors) {
+            <li>@curError</li>
+          }
+        </ul>
+      </p>
+    }
+    <label>QR Code Id: @ticket.QrCodeGuid - Type: @ticket.ItemCategoryName</label>
+
     <div class="form-group">
       <label>Tech Name</label>
       <InputText @bind-Value="ticket.TechName" class="form-control" />
     </div>
     <div class="form-group">
-      <label>Sample Date</label>
-      <InputDate @bind-Value="ticket.Item.SampleDate" class="form-control" />
+      <label>Product Name</label>
+      <InputText @bind-Value="ticket.ProductName" class="form-control" />
     </div>
     <div class="form-group">
-      <label>Sample Retrieved By</label>
-      <InputText @bind-Value="ticket.Item.SampleRetreivedBy" class="form-control" />
+      <label>Formulation Description</label>
+      <InputText @bind-Value="ticket.FormulationDescriptionType" class="form-control" />
     </div>
+    @switch (ticket.ItemCategoryName) {
+      case "Chemical":
+        <ChemicalInput @bind-Model="ticket.Item" />
+        break;
+      case "Instrument":
+        <InstrumentInput @bind-Model="ticket.Item" />
+        break;
+      case "Sample":
+        <SampleInput @bind-Model="ticket.Item" />
+        break;
+      default:
+        <p class="text-danger">Invalid Item Category.</p>
+        break;
+    }
+    <button type="submit" disabled="@saving">@(ticket.NewTicket ? "Save" : "Update")</button>
   </EditForm>
 }
 
@@ -47,6 +81,9 @@
   [Parameter] public string QrCodeGuid { get; set; }
 
   private string curGuid;
+  List<string> saveErrors = new List<string>();
+  string otherError;
+  bool saving;
 
   private TrackingTicketViewModel ticket;
   private string _selectedItemCategory;
@@ -54,8 +91,8 @@
     get => _selectedItemCategory;
     set {
       if (_selectedItemCategory == value || ticket?.ItemCategories is null) { return; }
-      ticket.ItemCategoryId = !string.IsNullOrWhiteSpace(value) ? value : default;
-      ticket.ItemCategoryName = string.IsNullOrWhiteSpace(value) ? default : ticket.ItemCategories.SingleOrDefault(ic => ic.Id == value)?.Name;
+      ticket.Item.CategoryId = !string.IsNullOrWhiteSpace(value) ? value : default;
+      ticket.Item.CategoryName = !string.IsNullOrWhiteSpace(value) ? ticket.ItemCategories.SingleOrDefault(ic => ic.Id == value)?.Name : default;
       _selectedItemCategory = value;
       StateHasChanged();
     }
@@ -65,6 +102,7 @@
     await LoadCurrentTrackingTicket();
   }
 
+  CancellationTokenSource loadingTicketCts;
   protected override async Task OnParametersSetAsync() {
     if (curGuid != QrCodeGuid) {
       await LoadCurrentTrackingTicket();
@@ -72,33 +110,89 @@
   }
 
   async Task LoadCurrentTrackingTicket() {
-    if (string.IsNullOrWhiteSpace(QrCodeGuid)) {
-      NavigationManager.NavigateTo($"track/{Guid.NewGuid()}");
-      return;
-    }
-    if (curGuid != QrCodeGuid) {
-      ticket = null;
-      try {
-        if (!string.IsNullOrWhiteSpace(QrCodeGuid) && Guid.TryParse(QrCodeGuid, out Guid qrCodeGuid)) {
-          curGuid = QrCodeGuid;
-          ticket = await Http.GetFromJsonAsync<TrackingTicketViewModel>($"api/Tickets/{QrCodeGuid}");
-        } else {
-          curGuid = null;
-        }
-      } catch (Exception ex) {
-        Console.Error.WriteLine(ex);
-        ticket = null;
-      }
-      if (ticket is null || ticket.QrCodeGuid == default) {
-        if (string.IsNullOrWhiteSpace(curGuid)) {
-          QrCodeGuid = Guid.NewGuid().ToString();
-          curGuid = QrCodeGuid;
-        }
-        ticket = new TrackingTicketViewModel() { QrCodeGuid = Guid.Parse(curGuid) };
-        curGuid = ticket.QrCodeGuid.ToString();
+    var guidToUse = QrCodeGuid;
+
+    if (string.IsNullOrWhiteSpace(curGuid) || curGuid != guidToUse) {
+      loadingTicketCts?.Cancel();
+      loadingTicketCts = new CancellationTokenSource();
+      var thisToken = loadingTicketCts.Token;
+
+
+      // Try to parse the QrCodeGuid to an actual Guid then try to find it in the database
+      // This happens even if this is a new ticket to get the list of categories
+      if (string.IsNullOrWhiteSpace(guidToUse) || !Guid.TryParse(guidToUse, out Guid qrCodeGuid)) {
+        // Navigated to this page without passing a Guid in the Route
+        // Create a new Guid for this new Ticket
+        guidToUse = Guid.NewGuid().ToString();
       }
 
-      _selectedItemCategory = !string.IsNullOrWhiteSpace(ticket.ItemCategoryId) ? ticket.ItemCategoryId : default;
+      curGuid = guidToUse;
+      ticket = null;
+      try {
+        if (thisToken.IsCancellationRequested) {
+          Console.WriteLine($"Loading Ticket cancelled for {guidToUse}");
+          return;
+        }
+        var foundTicket = await Http.GetFromJsonAsync<TrackingTicketViewModel>($"api/Tickets/{guidToUse}", thisToken);
+        _selectedItemCategory = !string.IsNullOrWhiteSpace(foundTicket.ItemCategoryId) ? foundTicket.ItemCategoryId : default;
+        if (thisToken.IsCancellationRequested) {
+          Console.WriteLine($"Loading Ticket cancelled for {guidToUse}");
+          return;
+        }
+        ticket = foundTicket;
+        curGuid = ticket.QrCodeGuid.ToString();
+        QrCodeGuid = curGuid;
+      } catch (TaskCanceledException) {
+        // We don't care about a cancelled task
+        Console.WriteLine($"Loading Ticket cancelled for {guidToUse}");
+      } catch (Exception ex) {
+        otherError = "An error occurred while trying contact the server";
+#if DEBUG
+        otherError += $": {ex.Message}\r\n\r\n{ex.StackTrace}";
+#endif
+        otherError = otherError.Replace("\r\n", "<br />");
+        return;
+      } finally {
+        await InvokeAsync(() => StateHasChanged());
+      }
+    }
+  }
+
+  async Task HandleValidSubmit(EditContext context) {
+    saving = true;
+    saveErrors = new List<string>();
+    await InvokeAsync(() => StateHasChanged());
+    try {
+      HttpResponseMessage resp;
+      resp = await Http.PostAsJsonAsync<TrackingTicketViewModel>("api/Tickets", ticket);
+      if (!resp.IsSuccessStatusCode) {
+        var errMsg = "The server did not response with a success message";
+#if DEBUG
+        errMsg += $". Response: ({resp.StatusCode}) {resp.ReasonPhrase}";
+#endif
+        saveErrors.Add(errMsg.Replace("\r\n", "<br />"));
+        return;
+      }
+      var saveResp = await resp.Content.ReadFromJsonAsync<SaveTicketResponseModel>();
+      if (saveResp.WasError) {
+        saveErrors = saveResp.ErrorMessages ?? new List<string>() {
+          "An unknown error occurred while saving."
+        };
+      } else {
+        ticket = saveResp.ReturnItem;
+        curGuid = ticket.QrCodeGuid.ToString();
+        QrCodeGuid = curGuid;
+      }
+    } catch (TaskCanceledException) {
+      // Not concerned with cancelled Http Requests, currently
+    } catch (Exception ex) {
+      var errMsg = "An exception occurred during the Save Request";
+#if DEBUG
+      errMsg += $": {ex.Message}\r\n\r\n{ex.StackTrace}";
+#endif
+      saveErrors.Add(errMsg.Replace("\r\n", "<br />"));
+    } finally {
+      saving = false;
       await InvokeAsync(() => StateHasChanged());
     }
   }
